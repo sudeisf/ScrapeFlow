@@ -22,4 +22,4 @@ def scrape_quotes():
         for quote in quotes:
             
             text = quote.find_element(By.CLASS_NAME, "text").text
-            author = quote.find_element
+            author = quote.find_elementcls
