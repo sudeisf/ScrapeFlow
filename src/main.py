@@ -14,24 +14,38 @@ def scrape_quotes():
     
     
     try:
-        logging.info(f"starting scraping at {BASE_URL}")
         driver.get(BASE_URL)
         
-        quotes = wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, "quote")))
-        
-        for quote in quotes:
+        while True:
             
-            text = quote.find_element(By.CLASS_NAME, "text").text
-            author = quote.find_element(By.CLASS_NAME, "author").text
+            logging.info(f"starting scraping at {driver.current_url}")
             
-            scraped_data.append({
-                "quote": clean_text(text),
-                "author": author
-            })
+            quotes = wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, "quote")))
             
+            for quote in quotes:
+                
+                text = quote.find_element(By.CLASS_NAME, "text").text
+                author = quote.find_element(By.CLASS_NAME, "author").text
+                
+                scraped_data.append({
+                    "quote": clean_text(text),
+                    "author": author
+                })
+                
+                
+            try:
+                # try to find the next button and click it, if not found, break the loop
+                next_button = driver.find_element(By.CSS_SELECTOR ,"li.next a")
+                next_button.click()
+                time.sleep(1)
+                
+            except Exception as e:
+                logging.info("No more pages found.")
+                break
+                                
             if scraped_data:
-                save_to_csv(scraped_data, OUTPUT_FILE)
-                logging.info(f"Scraping completed. Total quotes scraped: {len(scraped_data)}")
+                    save_to_csv(scraped_data, OUTPUT_FILE)
+                    logging.info(f"Scraping completed. Total quotes scraped: {len(scraped_data)}")
                 
     except Exception as e:
         driver.quit()
