@@ -22,4 +22,24 @@ def scrape_quotes():
         for quote in quotes:
             
             text = quote.find_element(By.CLASS_NAME, "text").text
-            author = quote.find_elementcls
+            author = quote.find_elementcls(By.CLASS_NAME, "author").text
+            
+            scraped_data.append({
+                "quote": clean_text(text),
+                "author": author
+            })
+            
+            if scraped_data:
+                save_to_csv(scraped_data, OUTPUT_FILE)
+                logging.info(f"Scraping completed. Total quotes scraped: {len(scraped_data)}")
+                
+    except Exception as e:
+        driver.quit()
+        logging.error(f"An error occurred: {e}")
+        
+    finally:
+        driver.quit()
+        logging.info("WebDriver closed.")
+        
+if __name__ == "__main__":
+    scrape_quotes()
