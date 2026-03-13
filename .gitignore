@@ -1,6 +1,8 @@
 
 __pycache__/
-logs/*.log
-data/*.csv
+logs/*
+data/*
 .env
 venv/
+data/
+logs/

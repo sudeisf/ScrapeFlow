@@ -9,7 +9,7 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
-def save_data(data, filename):
+def save_to_csv(data, filename):
     df = pd.DataFrame(data)
     df.to_csv(filename, index=False)
     logging.info(f"Succesfully saved {len(data)} into {filename}")

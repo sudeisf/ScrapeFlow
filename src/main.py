@@ -17,12 +17,12 @@ def scrape_quotes():
         logging.info(f"starting scraping at {BASE_URL}")
         driver.get(BASE_URL)
         
-        quotes = wait.until(EC.presence_of_all_elements_located(By.CLASS_NAME, "quote"))
+        quotes = wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, "quote")))
         
         for quote in quotes:
             
             text = quote.find_element(By.CLASS_NAME, "text").text
-            author = quote.find_elementcls(By.CLASS_NAME, "author").text
+            author = quote.find_element(By.CLASS_NAME, "author").text
             
             scraped_data.append({
                 "quote": clean_text(text),
